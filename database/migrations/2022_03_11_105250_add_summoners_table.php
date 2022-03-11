@@ -16,10 +16,11 @@ return new class extends Migration
         Schema::create('summoners', function (Blueprint $table) {
             $table->id();
             $table->string('summonerId');
+            $table->string('accountId');
             $table->string('puuid');
             $table->string('name');
             $table->integer('profileIconId');
-            $table->dateTime('revisionDate');
+            $table->dateTime('revisionDate')->default(now());
             $table->integer('summonerLevel');
             $table->timestamps();
 
