@@ -21,6 +21,7 @@ class Summoner extends Model
         'name',
         'profileIconId',
         'summonerLevel',
+        'revisionDate'
     ];
 
     /**
@@ -29,7 +30,6 @@ class Summoner extends Model
      * @var array<int, string>
      */
     protected $hidden = [
-
     ];
 
     /**
@@ -38,6 +38,5 @@ class Summoner extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'revisionDate' => 'datetime',
     ];
 }

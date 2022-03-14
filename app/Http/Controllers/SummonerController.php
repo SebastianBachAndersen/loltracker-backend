@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\SummonerResource;
 use App\Models\Summoner;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 
 class SummonerController extends Controller
@@ -22,7 +21,7 @@ class SummonerController extends Controller
                     'puuid' => $response['puuid'],
                     'name' => $response['name'],
                     'profileIconId' => $response['profileIconId'],
-                    'revisionDate' => Carbon::createFromTimestamp($response['revisionDate'])->format('Y-m-d h:i:s'),
+                    'revisionDate' => $response['revisionDate'],
                     'summonerLevel' => $response['summonerLevel']
 
                 ]);

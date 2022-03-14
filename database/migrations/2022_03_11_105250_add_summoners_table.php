@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('puuid');
             $table->string('name');
             $table->integer('profileIconId');
-            $table->dateTime('revisionDate')->default(now());
+            $table->bigInteger('revisionDate');
             $table->integer('summonerLevel');
             $table->timestamps();
 
