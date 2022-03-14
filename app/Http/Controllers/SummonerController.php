@@ -10,7 +10,7 @@ class SummonerController extends Controller
 {
     public function index(string $region, string $summonerName) {
         $response = Http::withHeaders(['X-Riot-Token' => config("services.riot_games_api.api_key")])
-            ->get("https://" . config("services.riot_games_api.regions.$region") .  config("services.riot_games_api.url") . "/lol/summoner/v4/summoners/by-name/$summonerName");
+            ->get("https://" . config("services.riot_games_api.servers.$region") .  config("services.riot_games_api.url") . "/lol/summoner/v4/summoners/by-name/$summonerName");
 
         if ($response->successful()) {
             $summoner = Summoner::where('summonerId', $response['id'])->first();

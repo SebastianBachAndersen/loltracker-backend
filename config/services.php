@@ -17,7 +17,7 @@ return [
     'riot_games_api' => [
         'api_key' => env('RIOT_GAMES_API_KEY'),
         'url' => env('RIOT_GAMES_API_URL'),
-        'regions' => [
+        'servers' => [
             'euw' => 'euw1',
             'br' => 'br1',
             'eune' => 'eun1',
@@ -28,6 +28,11 @@ return [
             'ru' => 'ru',
             'tr' => 'tr1',
             'jp' => 'jp1'
+        ],
+        'regions' => [
+            'europe',
+            'americas',
+            'asia'
         ]
     ]
 
