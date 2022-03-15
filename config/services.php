@@ -30,9 +30,9 @@ return [
             'jp' => 'jp1'
         ],
         'regions' => [
-            'europe',
-            'americas',
-            'asia'
+            'europe' => ['euw', 'eune', 'tr', 'ru'],
+            'americas' => ['na', 'br', 'lan', 'las', 'oce'],
+            'asia' => ['kr', 'jp']
         ]
     ]
 
