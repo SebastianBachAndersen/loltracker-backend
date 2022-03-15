@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\SummonerResource;
 use App\Models\Summoner;
+use App\Services\MatchService;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class SummonerController extends Controller
 {
@@ -26,7 +28,25 @@ class SummonerController extends Controller
 
                 ]);
             }
-            return (new SummonerResource($summoner))->additional(['result' => 'success']);
+
+            $matchService = new MatchService($region);
+
+            $matches = $matchService->getMatchHistory($summoner->puuid);
+
+            $matchHistory = [];
+            foreach ($matches as $matchId) {
+                Log::info($matches);
+                Log::info($matchId);
+                Log::info(gettype($matchId));
+                $matchHistory[] = $matchService->getMatch($matchId);
+            }
+            Log::info($matchHistory);
+
+            return [
+                'matchHistory' => $matchHistory,
+                'summoner' => new SummonerResource($summoner),
+                'result' => 'success'
+            ];
         } else {
             return response(['error' => 'not found'], 404);
         }
