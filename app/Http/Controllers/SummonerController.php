@@ -35,12 +35,8 @@ class SummonerController extends Controller
 
             $matchHistory = [];
             foreach ($matches as $matchId) {
-                Log::info($matches);
-                Log::info($matchId);
-                Log::info(gettype($matchId));
                 $matchHistory[] = $matchService->getMatch($matchId);
             }
-            Log::info($matchHistory);
 
             return [
                 'matchHistory' => $matchHistory,

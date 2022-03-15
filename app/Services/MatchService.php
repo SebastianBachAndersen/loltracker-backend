@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\MatchDetail;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class MatchService
 {
