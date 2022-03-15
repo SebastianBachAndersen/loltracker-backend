@@ -20,3 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('summoner/{region}/{summonerName}', [SummonerController::class, 'index']);
+
+Route::get('summoner/savelp/{region}/{summonerId}', [SummonerController::class, 'saveCurrentLp']);
