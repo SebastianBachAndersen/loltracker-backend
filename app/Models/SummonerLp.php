@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Summoner extends Model
+class SummonerLp extends Model
 {
     use HasFactory;
 
+    protected $table = 'summoner_lp';
 
     /**
      * The attributes that are mass assignable.
@@ -17,12 +18,13 @@ class Summoner extends Model
      */
     protected $fillable = [
         'summonerId',
-        'accountId',
-        'puuid',
-        'name',
-        'profileIconId',
-        'summonerLevel',
-        'revisionDate'
+        'queueType',
+        'tier',
+        'rank',
+        'leaguePoints',
+        'wins',
+        'losses',
+        'details'
     ];
 
     /**
@@ -40,11 +42,4 @@ class Summoner extends Model
      */
     protected $casts = [
     ];
-
-
-    public function lp()
-    {
-        return $this->hasMany(\App\Models\SummonerLp::class, 'summonerId', 'summonerId');
-    }
-
 }

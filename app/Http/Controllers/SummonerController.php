@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\SummonerResource;
 use App\Models\Summoner;
+use App\Services\LeagueService;
 use App\Services\MatchService;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class SummonerController extends Controller
 {
@@ -46,5 +46,12 @@ class SummonerController extends Controller
         } else {
             return response(['error' => 'not found'], 404);
         }
+    }
+
+    public function saveCurrentLp(string $region, string $summonerId) {
+        $leagueService = new LeagueService($region);
+        $response = $leagueService->saveCurrentSummonerLp($summonerId);
+
+        return response(['result' => $response]);
     }
 }
