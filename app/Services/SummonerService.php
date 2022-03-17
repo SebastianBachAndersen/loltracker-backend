@@ -19,10 +19,29 @@ class SummonerService
         $this->url = "https://" . config("services.riot_games_api.servers.$region") .  config("services.riot_games_api.url");
     }
 
+    public function getSummoner(string $summonerName) {
 
+        $response = $this->client->get("/lol/summoner/v4/summoners/by-name/$summonerName");
 
+        if ($response->successful()) {
+            $summoner = Summoner::where('summonerId', $response['id'])->first();
+            if (!$summoner) {
+                $summoner = Summoner::create([
+                    'summonerId' => $response['id'],
+                    'accountId' => $response['accountId'],
+                    'puuid' => $response['puuid'],
+                    'name' => $response['name'],
+                    'profileIconId' => $response['profileIconId'],
+                    'revisionDate' => $response['revisionDate'],
+                    'summonerLevel' => $response['summonerLevel']
 
+                ]);
+            }
+            return $summoner;
+        }
 
+        return null;
+    }
 
 
 
