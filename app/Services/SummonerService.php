@@ -21,7 +21,7 @@ class SummonerService
 
     public function getSummoner(string $summonerName) {
 
-        $response = $this->client->get("/lol/summoner/v4/summoners/by-name/$summonerName");
+        $response = $this->client->get($this->url . "/lol/summoner/v4/summoners/by-name/$summonerName");
 
         if ($response->successful()) {
             $summoner = Summoner::where('summonerId', $response['id'])->first();
