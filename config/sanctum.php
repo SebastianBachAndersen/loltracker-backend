@@ -62,4 +62,9 @@ return [
         'encrypt_cookies' => App\Http\Middleware\EncryptCookies::class,
     ],
 
+    //Abilities
+    'abilities' => [
+        'client' => 'client'
+    ]
+
 ];
