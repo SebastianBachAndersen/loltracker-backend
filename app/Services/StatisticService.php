@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\SummonerChampionStat;
 use App\Models\SummonerChampionStatsSummary;
-use stdClass;
 
 class StatisticService
 {
