@@ -4,31 +4,34 @@ namespace App\Services;
 
 use App\Models\SummonerChampionStat;
 use App\Models\SummonerChampionStatsSummary;
+use Illuminate\Support\Facades\DB;
 
 class StatisticService
 {
 
     public static function saveChampionStatisticsForGame($match) {
+            DB::beginTransaction( function () use ($match) {
+                foreach ($match['info']['participants'] as $participant) {
+                    SummonerChampionStat::create([
+                        'summonerId' => $participant['summonerId'],
+                        'championId' => $participant['championId'],
+                        'matchId' => $match['metadata']['matchId'],
+                        'win' => $participant['win'],
+                        'kills' => $participant['kills'],
+                        'deaths' => $participant['deaths'],
+                        'assits' => $participant['assists'],
+                        'cs' => $participant['totalMinionsKilled'],
+                        'damage' => $participant['totalDamageDealt'],
+                        'gold' => $participant['goldEarned'],
+                        'doubleKills' => $participant['doubleKills'],
+                        'tripleKills' => $participant['tripleKills'],
+                        'quadraKills' => $participant['quadraKills'],
+                        'pentaKills' => $participant['pentaKills'],
+                        'season'
+                    ]);
+                }
+            });
 
-        foreach ($match['info']['participants'] as $participant) {
-            SummonerChampionStat::create([
-                'summonerId' => $participant['summonerId'],
-                'championId' => $participant['championId'],
-                'matchId' => $match['metadata']['matchId'],
-                'win' => $participant['win'],
-                'kills' => $participant['kills'],
-                'deaths' => $participant['deaths'],
-                'assits' => $participant['assists'],
-                'cs' => $participant['totalMinionsKilled'],
-                'damage' => $participant['totalDamageDealt'],
-                'gold' => $participant['goldEarned'],
-                'doubleKills' => $participant['doubleKills'],
-                'tripleKills' => $participant['tripleKills'],
-                'quadraKills' => $participant['quadraKills'],
-                'pentaKills' => $participant['pentaKills'],
-                'season'
-            ]);
-        }
     }
 
     public static function saveAndCalculateChampionStatisticsForSummoner(int $championId, string $summonerId) {
