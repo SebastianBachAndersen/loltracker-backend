@@ -3,9 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Models\MatchDetail;
-use App\Models\SummonerChampionStat;
 use App\Services\StatisticService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class GetStatsFromMatchesInDb extends Command
 {
@@ -30,11 +30,14 @@ class GetStatsFromMatchesInDb extends Command
      */
     public function handle()
     {
-        $this->withProgressBar(MatchDetail::all(), function($match) {
-            if (SummonerChampionStat::where('matchId', $match->matchId)->first()) {
-                return;
-            }
+        Log::info("STARTING CRON: GetStatsFromMatchesInDb");
+
+        $this->withProgressBar(MatchDetail::where('calculated', false)->get(), function($match) {
             StatisticService::saveChampionStatisticsForGame($match->details);
+            $match->calculated = true;
+            $match->save();
         });
+
+        Log::info("FINISHED CRON: GetStatsFromMatchesInDb");
     }
 }
