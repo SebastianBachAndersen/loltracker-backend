@@ -19,12 +19,13 @@ class SummonerService
         $this->url = "https://" . config("services.riot_games_api.servers.$region") .  config("services.riot_games_api.url");
     }
 
-    public function getSummoner(string $summonerName) {
+    public function getSummoner(string $summonerName)
+    {
 
         $response = $this->client->get($this->url . "/lol/summoner/v4/summoners/by-name/$summonerName");
 
         if ($response->successful()) {
-            $summoner = Summoner::where('summonerId', $response['id'])->first();
+            $this->summoner = $summoner = Summoner::where('summonerId', $response['id'])->first();
             if (!$summoner) {
                 $summoner = Summoner::create([
                     'summonerId' => $response['id'],
@@ -42,8 +43,27 @@ class SummonerService
 
         return null;
     }
+    public function getLpGrafData()
+    {
 
+        $arrayToReturn = [];
 
-
+        foreach ($this->summoner->lp()->take(10)->get() as $key => $data) {
+            $points = $this->tierToPoints($data);
+            $arrayToReturn['data'][] = array(
+                'data' => $data->created_at,
+                'league_points' => $points,
+            );
+        }
+        return $arrayToReturn;
+    }
+    private function tierToPoints($data)
+    {
+        $tierAsPoints = config("leagueRanks.tierAsPoints");
+        $rankAsPoints = config("leagueRanks.rankAsPoints");
+        $tierName = strtolower($data->tier);
+        $tierAsPoints = $tierAsPoints[$tierName];
+        $rankAsPoints = $rankAsPoints[$data->rank];
+        return $tierAsPoints + $rankAsPoints + $data->leaguePoints;
+    }
 }
-
