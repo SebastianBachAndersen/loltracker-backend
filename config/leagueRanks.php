@@ -6,7 +6,7 @@ return [
         "bronze" => 400,
         "silver" => 800,
         "gold" => 1200,
-        "platinium" => 1600,
+        "platinum" => 1600,
         "diamond" => 2000,
         "master" => 2400,
         "grandMaster" => 2800,
