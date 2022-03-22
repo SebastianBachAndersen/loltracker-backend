@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ChampionStatisticResource;
 use App\Http\Resources\SummonerResource;
 use App\Models\Summoner;
+use App\Models\SummonerChampionStatsSummary;
 use App\Services\LeagueService;
 use App\Services\MatchService;
 use App\Services\SummonerService;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class SummonerController extends Controller
 {
@@ -28,8 +31,13 @@ class SummonerController extends Controller
                 $matchHistory[] = $matchService->getMatch($matchId);
             }
 
+            $championStats = SummonerChampionStatsSummary::where('summonerId', $summoner->summonerId)->get();
+            $championStats = $championStats->map(function ($champStat) {
+                return (new ChampionStatisticResource($champStat))->resolve();
+            });
             return [
                 'matchHistory' => $matchHistory,
+                'championStats' => $championStats,
                 'summoner' => new SummonerResource($summoner),
                 'result' => 'success'
             ];
