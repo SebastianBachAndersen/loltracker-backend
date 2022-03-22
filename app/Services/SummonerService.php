@@ -25,7 +25,7 @@ class SummonerService
         $response = $this->client->get($this->url . "/lol/summoner/v4/summoners/by-name/$summonerName");
 
         if ($response->successful()) {
-            $this->summoner = $summoner = Summoner::where('summonerId', $response['id'])->first();
+            $summoner = Summoner::where('summonerId', $response['id'])->first();
             if (!$summoner) {
                 $summoner = Summoner::create([
                     'summonerId' => $response['id'],
@@ -38,16 +38,14 @@ class SummonerService
 
                 ]);
             }
+            $this->summoner = $summoner;
             return $summoner;
         }
-
         return null;
     }
     public function getLpGrafData()
     {
-
         $arrayToReturn = [];
-
         foreach ($this->summoner->lp()->take(10)->get() as $key => $data) {
             $points = $this->tierToPoints($data);
             $arrayToReturn['data'][] = array(
