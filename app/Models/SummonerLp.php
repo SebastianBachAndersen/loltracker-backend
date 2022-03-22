@@ -42,4 +42,9 @@ class SummonerLp extends Model
      */
     protected $casts = [
     ];
+
+    
+    public function getDetailsAttribute() {
+        return json_decode($this->attributes['details'], true);
+    }
 }

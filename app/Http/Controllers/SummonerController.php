@@ -6,6 +6,7 @@ use App\Http\Resources\ChampionStatisticResource;
 use App\Http\Resources\SummonerResource;
 use App\Models\Summoner;
 use App\Models\SummonerChampionStatsSummary;
+use App\Models\SummonerLp;
 use App\Services\LeagueService;
 use App\Services\MatchService;
 use App\Services\SummonerService;
@@ -14,13 +15,15 @@ use Illuminate\Support\Facades\Log;
 
 class SummonerController extends Controller
 {
-    public function index(string $region, string $summonerName) {
+    public function index(string $region, string $summonerName)
+    {
 
         $SummonerService = new SummonerService($region);
 
         $summoner = $SummonerService->getSummoner($summonerName);
 
         if ($summoner) {
+
 
             $matchService = new MatchService($region);
 
@@ -39,6 +42,7 @@ class SummonerController extends Controller
                 'matchHistory' => $matchHistory,
                 'championStats' => $championStats,
                 'summoner' => new SummonerResource($summoner),
+                'lpGrafData' =>  $SummonerService->getLpGrafData($summoner),
                 'result' => 'success'
             ];
         } else {
@@ -46,7 +50,8 @@ class SummonerController extends Controller
         }
     }
 
-    public function saveCurrentLp(string $region, string $summonerId) {
+    public function saveCurrentLp(string $region, string $summonerId)
+    {
         $leagueService = new LeagueService($region);
         $response = $leagueService->saveCurrentSummonerLp($summonerId);
 
