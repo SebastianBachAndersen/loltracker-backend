@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\SummonerController;
+use App\http\Controllers\MatchController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware(['auth:sanctum', 'ability:client'])->group(function () {
+    Route::get('match/{region}/{matchRegionId}/timeline', [MatchController::class, 'index']);
     Route::get('summoner/{region}/{summonerName}', [SummonerController::class, 'index']);
     Route::get('summoner/savelp/{region}/{summonerId}', [SummonerController::class, 'saveCurrentLp']);
 });
