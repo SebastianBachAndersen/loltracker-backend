@@ -17,6 +17,7 @@ class Champion extends Model
     protected $fillable = [
         'championId',
         'name',
+        'nameId'
     ];
 
     /**
@@ -24,14 +25,12 @@ class Champion extends Model
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
-    protected $casts = [
-    ];
+    protected $casts = [];
 }
