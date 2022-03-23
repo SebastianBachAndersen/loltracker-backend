@@ -31,6 +31,7 @@ class LeagueService
                     $soloRanked = $rank;
                 }
             }
+            //last entry
             $lp = $summoner->lp()->orderByDesc('id')->first();
             if ($lp && ($lp->leaguePoints !== $soloRanked['leaguePoints'])) {
                 SummonerLp::create([
