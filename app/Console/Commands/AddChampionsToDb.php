@@ -34,7 +34,7 @@ class AddChampionsToDb extends Command
         $champions = json_decode(file_get_contents(storage_path() . "/json/champions.json", true));
         foreach ($champions as $champion) {
             if (!Champion::where('championId', $champion->id)->first()) {
-                Champion::create(['championId' => $champion->id, 'name' => $champion->name]);
+                Champion::create(['championId' => $champion->id, 'name' => $champion->name, 'nameId' => $champion->alias]);
             }
         }
     }
