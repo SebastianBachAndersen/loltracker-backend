@@ -24,26 +24,30 @@ class LeagueService
     {
         $response = $this->client->get($this->url . "/lol/league/v4/entries/by-summoner/$summonerId");
         if ($response->successful()) {
+            $summoner = Summoner::where('summonerId', $summonerId)->first();
             $soloRanked = null;
             foreach ($response->json() as $rank) {
                 if ($rank['queueType'] === "RANKED_SOLO_5x5") {
                     $soloRanked = $rank;
                 }
             }
-            SummonerLp::create([
-                'summonerId' => $summonerId,
-                'queueType' => $soloRanked['queueType'],
-                'tier' => $soloRanked['tier'],
-                'rank' => $soloRanked['rank'],
-                'leaguePoints' => $soloRanked['leaguePoints'],
-                'wins' => $soloRanked['wins'],
-                'losses' => $soloRanked['losses'],
-                'details' => $response->body()
-            ]);
-            return "created";
-        } else {
-            Log::alert($response);
-            return "error";
+            $lp = $summoner->lp()->first();
+            if ($lp && !$lp->leaguePoints === $soloRanked['leaguePoints']) {
+
+                SummonerLp::create([
+                    'summonerId' => $summonerId,
+                    'queueType' => $soloRanked['queueType'],
+                    'tier' => $soloRanked['tier'],
+                    'rank' => $soloRanked['rank'],
+                    'leaguePoints' => $soloRanked['leaguePoints'],
+                    'wins' => $soloRanked['wins'],
+                    'losses' => $soloRanked['losses'],
+                    'details' => $response->body()
+                ]);
+            }
+            return "Success";
         }
+        Log::alert($response);
+        return "error";
     }
 }
