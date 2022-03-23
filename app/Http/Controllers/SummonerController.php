@@ -38,9 +38,12 @@ class SummonerController extends Controller
             $championStats = $championStats->map(function ($champStat) {
                 return (new ChampionStatisticResource($champStat))->resolve();
             });
+
+            $sortedStats = $championStats->sortByDesc('totalGames');
+
             return [
                 'matchHistory' => $matchHistory,
-                'championStats' => $championStats,
+                'championStats' => $sortedStats,
                 'summoner' => new SummonerResource($summoner),
                 'lpGrafData' =>  $SummonerService->getLpGrafData($summoner),
                 'result' => 'success'
