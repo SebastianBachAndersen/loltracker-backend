@@ -43,7 +43,7 @@ class SummonerController extends Controller
 
             return [
                 'matchHistory' => $matchHistory,
-                'championStats' => $sortedStats,
+                'championStats' => $sortedStats->values(),
                 'summoner' => new SummonerResource($summoner),
                 'lpGrafData' =>  $SummonerService->getLpGrafData($summoner),
                 'result' => 'success'
