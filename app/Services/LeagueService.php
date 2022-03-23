@@ -31,8 +31,9 @@ class LeagueService
                     $soloRanked = $rank;
                 }
             }
-            $lp = $summoner->lp()->first();
-            if (!$lp || $lp->leaguePoints !== $soloRanked['leaguePoints']) {
+            //last entry
+            $lp = $summoner->lp()->orderByDesc('id')->first();
+            if ($lp && ($lp->leaguePoints !== $soloRanked['leaguePoints'])) {
                 SummonerLp::create([
                     'summonerId' => $summonerId,
                     'queueType' => $soloRanked['queueType'],
@@ -43,13 +44,10 @@ class LeagueService
                     'losses' => $soloRanked['losses'],
                     'details' => $response->body()
                 ]);
-                return "created";
-            } else {
-                return "duplicate";
             }
-        } else {
-            Log::alert($response);
-            return "error";
+            return "Success";
         }
+        Log::alert($response);
+        return "error";
     }
 }
