@@ -21,5 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware(['auth:sanctum', 'ability:client'])->group(function () {
     Route::get('summoner/{region}/{summonerName}', [SummonerController::class, 'index']);
+});
+Route::middleware(['throttle:openEndpoints'])->group(function () {
     Route::get('summoner/savelp/{region}/{summonerId}', [SummonerController::class, 'saveCurrentLp']);
 });
