@@ -6,6 +6,7 @@ use App\Models\Summoner;
 use App\Models\SummonerLp;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class LeagueService
 {
@@ -19,7 +20,8 @@ class LeagueService
         $this->url = "https://" . config("services.riot_games_api.servers.$region") .  config("services.riot_games_api.url");
     }
 
-    public function saveCurrentSummonerLp(string $summonerId) {
+    public function saveCurrentSummonerLp(string $summonerId)
+    {
         $response = $this->client->get($this->url . "/lol/league/v4/entries/by-summoner/$summonerId");
         if ($response->successful()) {
             $summoner = Summoner::where('summonerId', $summonerId)->first();
@@ -45,10 +47,9 @@ class LeagueService
             } else {
                 return "duplicate";
             }
-
         } else {
+            Log::alert($response);
             return "error";
         }
     }
-
 }
