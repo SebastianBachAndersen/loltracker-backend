@@ -4,8 +4,10 @@ namespace App\Services;
 
 use App\Events\MatchAdded;
 use App\Models\MatchDetail;
+use App\Models\MatchTimeline;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class MatchService
 {
@@ -25,7 +27,8 @@ class MatchService
     }
 
 
-    public function getMatch(string $matchId) {
+    public function getMatch(string $matchId)
+    {
 
         if ($matchDetail = MatchDetail::where('matchId', $matchId)->first()) {
             return $matchDetail;
@@ -38,20 +41,20 @@ class MatchService
             $match = MatchDetail::create([
                 'matchId' => $response['metadata']['matchId'],
                 'match_created_at' =>  $response['info']['gameCreation'],
-                'details' => $response->body()]);
+                'details' => $response->body()
+            ]);
 
 
             event(new MatchAdded($match));
 
             return $match;
-
         }
 
         return null;
-
     }
 
-    public function getMatchHistory(string $puuid) {
+    public function getMatchHistory(string $puuid)
+    {
 
         $response = $this->client->get($this->url . "/lol/match/v5/matches/by-puuid/$puuid/ids");
 
@@ -61,5 +64,21 @@ class MatchService
 
         return null;
     }
+    public function getMatchTimeLine(string $matchId)
+    {
+        if ($MatchTimeline = MatchTimeline::where('matchId', $matchId)->first()) {
+            return $MatchTimeline;
+        }
+        $response = $this->client->get($this->url . "/lol/match/v5/matches/$matchId/timeline");
 
+        if ($response->successful()) {
+            $match = MatchTimeline::create([
+                'matchId' => $response['metadata']['matchId'],
+                'timeline' => $response->body()
+            ]);
+            return $match;
+        }
+
+        return null;
+    }
 }
