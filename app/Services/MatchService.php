@@ -19,7 +19,7 @@ class MatchService
     {
         foreach (config('services.riot_games_api.regions') as $key => $value) {
             if (in_array($region, $value)) {
-                $this->region = $region = $key;
+                $region = $key;
             }
         }
         $this->client = Http::withHeaders(['X-Riot-Token' => config("services.riot_games_api.api_key")]);
