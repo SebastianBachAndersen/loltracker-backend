@@ -41,14 +41,22 @@ class SummonerChampionStatsSummary extends Model
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
-    protected $casts = [
-    ];
+    protected $casts = [];
+
+    public function champion()
+    {
+        return $this->hasOne(\App\Models\Champion::class, 'championId', 'championId');
+    }
+
+    public function getChampionAttribute()
+    {
+        return $this->champion()->first();
+    }
 }

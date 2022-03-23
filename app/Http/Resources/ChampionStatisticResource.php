@@ -25,7 +25,7 @@ class ChampionStatisticResource extends JsonResource
                 "damage" => $this->damage ?? 1 / $totalGames ?? 1,
                 "gold" => $this->gold ?? 1 / $totalGames ?? 1,
             ],
-            "championId" => $this->championId,
+            "name" => $this->champion->name,
             "wins" => $this->wins,
             "losses" => $this->losses,
             "winRate" => $this->winRate,
