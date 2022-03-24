@@ -18,12 +18,10 @@ class ChampionStatisticResource extends JsonResource
 
         return [
             "average" => [
-                "kills" => $this->kills ?? 1 / $totalGames ?? 1,
-                "deaths" => $this->deaths ?? 1 / $totalGames ?? 1,
-                "assits" => $this->assits ?? 1 / $totalGames ?? 1,
-                "cs" => $this->cs ?? 1 / $totalGames ?? 1,
-                "damage" => $this->damage ?? 1 / $totalGames ?? 1,
-                "gold" => $this->gold ?? 1 / $totalGames ?? 1,
+                "kills" => $this->average($this->kills ?? 1, $totalGames ?? 1),
+                "deaths" => $this->average($this->deaths ?? 1, $totalGames ?? 1),
+                "assits" => $this->average($this->assits ?? 1, $totalGames ?? 1),
+                "cs" => $this->average($this->cs ?? 1, $totalGames ?? 1, 0),
             ],
             "championName" => $this->champion->name,
             "championNameId" => $this->champion->nameId,
@@ -38,5 +36,11 @@ class ChampionStatisticResource extends JsonResource
             "pentaKills" => $this->pentaKills,
             "season" => $this->season,
         ];
+    }
+
+    function average($num, $total, $decimals = 1)
+    {
+        $result = $num / $total;
+        return round($result, $decimals);
     }
 }
